@@ -1,0 +1,24 @@
+.collapsible__header {
+  cursor: pointer;
+}
+
+.collapsible__panel {
+  background-color: gold;
+  overflow: hidden;
+}
+
+.collapsible--active .collapsible__panel {
+  -webkit-transition: height ease .5s;
+  transition: height ease .5s;
+}
+
+.collapsible__container {
+  padding: 20px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.collapsible--full-width-content .collapsible__container {
+  padding: 0;
+}
+/*# sourceMappingURL=collapsible.css.map */

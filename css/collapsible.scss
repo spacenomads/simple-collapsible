@@ -1,0 +1,21 @@
+.collapsible__header {
+	cursor: pointer;
+}
+
+.collapsible__panel {
+	background-color: gold;
+	overflow: hidden;
+
+	.collapsible--active & {
+		transition: height ease .5s;
+	}
+}
+
+.collapsible__container {
+	padding: 20px;
+	box-sizing: border-box;
+
+	.collapsible--full-width-content & {
+		padding: 0;
+	}
+}

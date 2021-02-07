@@ -5,8 +5,8 @@
   "main": "index.html",
   "devDependencies": {
     "stylelint": "*",
-		"stylelint-config-standard": "*",
-		"stylelint-scss": "*"
+    "stylelint-config-standard": "*",
+    "stylelint-scss": "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
