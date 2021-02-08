@@ -3,11 +3,15 @@
 }
 
 .collapsible__panel {
-	background-color: gold;
-	overflow: hidden;
+	background: gold;
 
 	.collapsible--active & {
 		transition: height ease .5s;
+		overflow: hidden;
+	}
+
+	.collapsible--overflow & {
+		overflow: visible;
 	}
 }
 

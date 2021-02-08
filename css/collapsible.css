@@ -3,13 +3,17 @@
 }
 
 .collapsible__panel {
-  background-color: gold;
-  overflow: hidden;
+  background: gold;
 }
 
 .collapsible--active .collapsible__panel {
   -webkit-transition: height ease .5s;
   transition: height ease .5s;
+  overflow: hidden;
+}
+
+.collapsible--overflow .collapsible__panel {
+  overflow: visible;
 }
 
 .collapsible__container {

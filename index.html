@@ -10,13 +10,19 @@
 <body class="page">
 	<main class="page__main">
 
-		<section class="collapsible js__collapsible">
+		<section class="collapsible collapsible--open js__collapsible">
 			<header class="collapsible__header js__collapsible-trigger">
 				<h2 class="collapsible__title">Título 1</h2>
 			</header>
 			<div class="collapsible__panel js__collapsible-panel">
 				<div class="collapsible__container js__collapsible-container">
 					Contenido del colapsable
+					<div class="box" style="position: relative;">
+						Algo que se sale
+						<div class="box__overflow" style="position: absolute;left: 0;top:0;background:cyan;height: 100px;">
+							Sorpresa
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>

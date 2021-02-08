@@ -1,3 +1,11 @@
+const MINHEIGHT = 0;
+const PANEL_SPEED = 400;
+const collapsibles = document.querySelectorAll('.js__collapsible');
+
+
+
+
+
 function getContentHeight(el) {
 	const content = el.querySelector('.js__collapsible-container');
 	return content.offsetHeight;
@@ -12,6 +20,11 @@ function openCollapsible(el) {
 	const contentHeight = getContentHeight(el);
 	panel.style.height = contentHeight + 'px';
 	el.classList.add('collapsible--open');
+	setTimeout(
+		() => {
+			el.classList.add('collapsible--overflow');
+		},
+		PANEL_SPEED);
 }
 
 
@@ -19,6 +32,7 @@ function openCollapsible(el) {
 
 
 function closeCollapsible(el) {
+	el.classList.remove('collapsible--overflow');
 	const panel = el.querySelector('.js__collapsible-panel');
 	panel.style.height = MINHEIGHT + 'px';
 	el.classList.remove('collapsible--open');
@@ -47,6 +61,8 @@ function initCollapsibles(collapsibles) {
 		const isOpen = collapsible.classList.contains('collapsible--open');
 		const contentHeight = getContentHeight(collapsible);
 
+		isOpen && collapsible.classList.add('collapsible--overflow');
+
 		const initialHeight = isOpen ? contentHeight : 0;
 		panel.style.height = initialHeight + 'px';
 
@@ -58,8 +74,5 @@ function initCollapsibles(collapsibles) {
 
 
 
-const MINHEIGHT = 1;
-
-const collapsibles = document.querySelectorAll('.js__collapsible');
 
 collapsibles && initCollapsibles(collapsibles);
