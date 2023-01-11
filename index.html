@@ -5,40 +5,88 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Collapsible</title>
-	<link rel="stylesheet" href="css/collapsible.css">
+	<link rel="stylesheet" href="css/c-foldable.css">
+	<script src="js/foldable.js" defer></script>
 </head>
 <body class="page">
 	<main class="page__main">
 
-		<section class="collapsible collapsible--open js__collapsible">
-			<header class="collapsible__header js__collapsible-trigger">
-				<h2 class="collapsible__title">Título 1</h2>
-			</header>
-			<div class="collapsible__panel js__collapsible-panel">
-				<div class="collapsible__container js__collapsible-container">
-					Contenido del colapsable
-					<div class="box" style="position: relative;">
-						Algo que se sale
-						<div class="box__overflow" style="position: absolute;left: 0;top:0;background:cyan;height: 100px;">
-							Sorpresa
+		<div class="c-foldable js-foldable" data-foldable-accordion="true">
+			<div class="c-foldable__item js-foldable-item">
+				<div class="c-foldable__trigger js-foldable-trigger">
+					Haz click aquí 1
+				</div>
+				<div class="c-foldable__panel js-foldable-panel">
+					<div class="c-foldable__panel-inner js-foldable-panel-inner">
+						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
+						<p>Nulla accusamus architecto voluptas, aspernatur quos id ut pariatur. Iste incidunt exercitationem quia beatae cumque!</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="c-foldable__item is-open js-foldable-item">
+				<div class="c-foldable__trigger js-foldable-trigger">
+					Haz click aquí 2
+				</div>
+				<div class="c-foldable__panel js-foldable-panel">
+					<div class="c-foldable__panel-inner js-foldable-panel-inner">
+						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
+						<p>Nulla accusamus architecto voluptas, aspernatur quos id ut pariatur. Iste incidunt exercitationem quia beatae cumque!</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="c-foldable__item js-foldable-item">
+				<div class="c-foldable__trigger js-foldable-trigger">
+					Haz click aquí 3
+				</div>
+				<div class="c-foldable__panel js-foldable-panel">
+					<div class="c-foldable__panel-inner js-foldable-panel-inner">
+						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
+						<p>Nulla accusamus architecto voluptas, aspernatur quos id ut pariatur. Iste incidunt exercitationem quia beatae cumque!</p>
+
+						<div class="c-foldable js-foldable">
+							<div class="c-foldable__item js-foldable-item">
+								<div class="c-foldable__trigger js-foldable-trigger">
+									Haz click aquí 3.1
+								</div>
+								<div class="c-foldable__panel js-foldable-panel">
+									<div class="c-foldable__panel-inner js-foldable-panel-inner">
+										<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
+										<p>Nulla accusamus architecto voluptas, aspernatur quos id ut pariatur. Iste incidunt exercitationem quia beatae cumque!</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="c-foldable__item js-foldable-item">
+								<div class="c-foldable__trigger js-foldable-trigger">
+									Haz click aquí 3.2
+								</div>
+								<div class="c-foldable__panel js-foldable-panel">
+									<div class="c-foldable__panel-inner js-foldable-panel-inner">
+										<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
+										<p>Nulla accusamus architecto voluptas, aspernatur quos id ut pariatur. Iste incidunt exercitationem quia beatae cumque!</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="c-foldable__item js-foldable-item">
+								<div class="c-foldable__trigger js-foldable-trigger">
+									Haz click aquí 3.3
+								</div>
+								<div class="c-foldable__panel js-foldable-panel">
+									<div class="c-foldable__panel-inner js-foldable-panel-inner">
+										<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
+										<p>Nulla accusamus architecto voluptas, aspernatur quos id ut pariatur. Iste incidunt exercitationem quia beatae cumque!</p>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
-
-		<section class="collapsible collapsible--open collapsible--full-width-content js__collapsible">
-			<header class="collapsible__header js__collapsible-trigger">
-				<h2 class="collapsible__title">Título 2</h2>
-			</header>
-			<div class="collapsible__panel js__collapsible-panel">
-				<div class="collapsible__container js__collapsible-container">
-					Contenido del colapsable
-				</div>
-			</div>
-		</section>
+		</div>
 
 	</main>
-	<script src="js/collapsible.js" type="module"></script>
 </body>
 </html>

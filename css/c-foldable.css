@@ -1,0 +1,34 @@
+.c-foldable {}
+
+/* TODO: Delete */
+.c-foldable p {
+	margin:0
+}
+
+.c-foldable__item {
+	background: #c4c4c4;
+}
+
+.c-foldable__trigger {
+	background: yellow;
+}
+
+.c-foldable__panel {
+	background: pink;
+	padding: 0.1px;
+	opacity: .5;
+}
+
+.c-foldable__panel-inner {
+	background: deeppink;
+	margin: 10px;
+}
+
+.c-foldable__item.is-open .c-foldable__panel {
+	opacity: 1;
+}
+
+
+.c-foldable.is-active .c-foldable__panel {
+	overflow: hidden;
+}
