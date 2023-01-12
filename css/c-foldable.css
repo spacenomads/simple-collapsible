@@ -15,13 +15,14 @@
 
 .c-foldable__panel {
 	background: pink;
-	padding: 0.1px;
 	opacity: .5;
 }
 
 .c-foldable__panel-inner {
+	padding: 10px;
+}
+.c-foldable__panel-inner > * {
 	background: deeppink;
-	margin: 10px;
 }
 
 .c-foldable__item.is-open .c-foldable__panel {
@@ -31,4 +32,5 @@
 
 .c-foldable.is-active .c-foldable__panel {
 	overflow: hidden;
+	transition: height ease .3s;
 }
