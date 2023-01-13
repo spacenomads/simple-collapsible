@@ -15,7 +15,6 @@
 
 .c-foldable__panel {
 	background: pink;
-	opacity: .5;
 }
 
 .c-foldable__panel-inner {
@@ -25,9 +24,7 @@
 	background: deeppink;
 }
 
-.c-foldable__item.is-open .c-foldable__panel {
-	opacity: 1;
-}
+.c-foldable__item.is-open .c-foldable__panel {}
 
 
 .c-foldable.is-active .c-foldable__panel {

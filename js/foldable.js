@@ -50,9 +50,16 @@ function closeFoldable(item) {
 	// [x] Me cierro
 	// [x] Poner el tamaño del panel a 0
 	const panel = item.querySelector('.js-foldable-panel');
-	setHeight(panel, 0);
+	const contentHeight = getContentHeight(panel);
+	setHeight(panel, contentHeight);
+	setTimeout(() => {
+		setHeight(panel, 0);
+		setTimeout(() => {
+			item.classList.remove('is-open');
+		}, 350);
+	}, 0);
 	// [x] Elimino la clase is-open
-	item.classList.remove('is-open');
+
 }
 
 

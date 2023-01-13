@@ -1,11 +1,26 @@
-# simple-collapsible
-Just a basic collapsible
+# Foldable+
+
+Just a basic responsive animated nestable accessible collapsible that can behave like an accordion.
+
+## Structure
+![Container structure](assets/boxes.png)
+
+```txt
+.c-foldable.js-foldable
+└── .c-foldable-item.js-foldable-item
+    ├── .c-foldable-trigger.js-foldable-trigger
+    └── .c-foldable-panel.js-foldable-panel
+        └── .c-foldable-panel-container.js-foldable-panel
+```
 
 ## Features
 
-- [ ] Animated
-- [ ] Nested blocks
+- [x] Responsive
+- [x] Animated
+- [x] Nested blocks
 - [ ] A11y
 - [ ] Limits
-- [ ] Open by default
+- [x] Open by default
 - [ ] Accordion behaviour
+
+## Examples
