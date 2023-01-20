@@ -30,8 +30,15 @@ function getContentHeight(panel) {
 // Foldable functions
 function openFoldable(item) {
 	// [x] Me abro
-	// [] Comprobar si soy un acordeon
-	// [] Si lo soy -> cierro los demás
+	// [x] Comprobar si soy un acordeon
+	const block = item.closest('.js-foldable');
+	const isAccordion = block.dataset.foldableAccordion === "true";
+
+	if (isAccordion) {
+		// [x] Si lo soy -> cierro los demás
+		const openAccordionItems = block.querySelectorAll(':scope > .js-foldable-item.is-open');
+		openAccordionItems.forEach(item => closeFoldable(item))
+	}
 	// [x] Calcular el tamaño del panel
 	// 	[x] y asignarselo
 	const panel = item.querySelector('.js-foldable-panel');

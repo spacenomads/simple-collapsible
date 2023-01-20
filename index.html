@@ -6,16 +6,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Collapsible</title>
 	<link rel="stylesheet" href="css/c-foldable.css">
-	<script src="js/foldable.js" defer></script>
+	<script src="js/c-fodlable.js" defer></script>
 </head>
 <body class="page">
 	<main class="page__main">
 
-		<div class="c-foldable js-foldable" data-foldable-accordion="true">
-			<div class="c-foldable__item js-foldable-item">
-				<div class="c-foldable__trigger js-foldable-trigger">
+		<div class="c-foldable js-foldable" data-foldable-accordion="true" data-foldable-off="desktop">
+			<div class="c-foldable__item is-open js-foldable-item">
+				<button type="button" class="c-foldable__trigger js-foldable-trigger">
 					Haz click aquí 1
-				</div>
+				</button>
 				<div class="c-foldable__panel js-foldable-panel">
 					<div class="c-foldable__panel-inner js-foldable-panel-inner">
 						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
@@ -25,9 +25,9 @@
 			</div>
 
 			<div class="c-foldable__item is-open js-foldable-item">
-				<div class="c-foldable__trigger js-foldable-trigger">
+				<button type="button" class="c-foldable__trigger js-foldable-trigger">
 					Haz click aquí 2
-				</div>
+				</button>
 				<div class="c-foldable__panel js-foldable-panel">
 					<div class="c-foldable__panel-inner js-foldable-panel-inner">
 						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
@@ -36,20 +36,20 @@
 				</div>
 			</div>
 
-			<div class="c-foldable__item is-open js-foldable-item">
-				<div class="c-foldable__trigger js-foldable-trigger">
+			<div class="c-foldable__item js-foldable-item">
+				<button type="button" class="c-foldable__trigger js-foldable-trigger">
 					Haz click aquí 3
-				</div>
+				</button>
 				<div class="c-foldable__panel js-foldable-panel">
 					<div class="c-foldable__panel-inner js-foldable-panel-inner">
 						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
 						<p>Nulla accusamus architecto voluptas, aspernatur quos id ut pariatur. Iste incidunt exercitationem quia beatae cumque!</p>
 
-						<div class="c-foldable js-foldable">
+						<div class="c-foldable js-foldable" data-foldable-accordion="true">
 							<div class="c-foldable__item js-foldable-item">
-								<div class="c-foldable__trigger js-foldable-trigger">
+								<button type="button" class="c-foldable__trigger js-foldable-trigger">
 									Haz click aquí 3.1
-								</div>
+								</button>
 								<div class="c-foldable__panel js-foldable-panel">
 									<div class="c-foldable__panel-inner js-foldable-panel-inner">
 										<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
@@ -59,9 +59,9 @@
 							</div>
 
 							<div class="c-foldable__item is-open js-foldable-item">
-								<div class="c-foldable__trigger js-foldable-trigger">
+								<button type="button" class="c-foldable__trigger js-foldable-trigger">
 									Haz click aquí 3.2
-								</div>
+								</button>
 								<div class="c-foldable__panel js-foldable-panel">
 									<div class="c-foldable__panel-inner js-foldable-panel-inner">
 										<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
@@ -71,9 +71,9 @@
 							</div>
 
 							<div class="c-foldable__item js-foldable-item">
-								<div class="c-foldable__trigger js-foldable-trigger">
+								<button type="button" class="c-foldable__trigger js-foldable-trigger">
 									Haz click aquí 3.3
-								</div>
+								</button>
 								<div class="c-foldable__panel js-foldable-panel">
 									<div class="c-foldable__panel-inner js-foldable-panel-inner">
 										<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
