@@ -10,14 +10,12 @@ const FOLDABLE_SELECTORS = {
 function getFoldableItemStatus(trigger) {
 	const item = trigger.closest('.js-foldable-item');
 	const isOpen = item.classList.contains('is-open');
-
 	return {item, isOpen};
 }
 
 
 function setHeight(el, value) {
-	const height = value === 0 ? '0' : `${value}px`;
-	el.style.height = height;
+	el.style.height = value === 0 ? '0' : `${value}px`;
 }
 
 
@@ -29,33 +27,23 @@ function getContentHeight(panel) {
 
 // Foldable functions
 function openFoldable(item) {
-	// [x] Me abro
-	// [x] Comprobar si soy un acordeon
 	const block = item.closest('.js-foldable');
 	const isAccordion = block.dataset.foldableAccordion === "true";
-
 	if (isAccordion) {
-		// [x] Si lo soy -> cierro los demás
 		const openAccordionItems = block.querySelectorAll(':scope > .js-foldable-item.is-open');
 		openAccordionItems.forEach(item => closeFoldable(item))
 	}
-	// [x] Calcular el tamaño del panel
-	// 	[x] y asignarselo
 	const panel = item.querySelector('.js-foldable-panel');
 	const contentHeight = getContentHeight(panel);
 	setHeight(panel, contentHeight);
 	setTimeout(() => {
-		// [x] Coloco la clase is-open
 		item.classList.add('is-open');
-		// [x] Eliminar el tamaño del panel
 		panel.style.height = null;
 	}, 350);
 }
 
 
 function closeFoldable(item) {
-	// [x] Me cierro
-	// [x] Poner el tamaño del panel a 0
 	const panel = item.querySelector('.js-foldable-panel');
 	const contentHeight = getContentHeight(panel);
 	setHeight(panel, contentHeight);
@@ -65,36 +53,28 @@ function closeFoldable(item) {
 			item.classList.remove('is-open');
 		}, 350);
 	}, 0);
-	// [x] Elimino la clase is-open
-
 }
 
 
 function updateFoldableItem(event) {
-	// [x] Comprobar si estoy abierto o cerrado
 	const trigger = event.currentTarget;
 	const {item, isOpen} = getFoldableItemStatus(trigger);
-	// [x] Me abro si estoy cerrado
-	// [x] Me cierro si estoy abierto
 	isOpen ? closeFoldable(item) : openFoldable(item);
 }
 
 
 function foldableInit(blocks, triggers) {
 	triggers.forEach(trigger => {
-		// [x] Revisar si alguno debe estar abierto.
 		const {item, isOpen} = getFoldableItemStatus(trigger);
 		const panel = item.querySelector('.js-foldable-panel');
-
 
 		if (!isOpen) {
 			setHeight(panel, 0);
 		}
 
-		// [x] Asignar listener a los triggers
 		trigger.addEventListener('click', updateFoldableItem);
 	});
-	// [x] Colocar clase de activo
+
 	blocks.forEach(block => block.classList.add('is-active'));
 }
 

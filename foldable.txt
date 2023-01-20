@@ -1,7 +1,0 @@
-foldable
-└── foldable-item
-    ├── foldable-trigger
-    └── foldable-panel
-        └── foldable-panel-container
-
-4 directories, 0 files
