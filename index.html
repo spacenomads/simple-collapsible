@@ -11,12 +11,18 @@
 <body class="page">
 	<main class="page__main">
 
-		<div class="c-foldable js-foldable" data-foldable-accordion="true" data-foldable-off="desktop">
+		<section class="c-foldable js-foldable" data-foldable-accordion="true" data-foldable-off="desktop">
 			<div class="c-foldable__item is-open js-foldable-item">
-				<button type="button" class="c-foldable__trigger js-foldable-trigger">
-					Haz click aquí 1
-				</button>
-				<div class="c-foldable__panel js-foldable-panel">
+
+
+
+
+				<h2>
+					<button type="button" class="c-foldable__trigger js-foldable-trigger" aria-controls="panel1" aria-expanded="true" aria-disabled="true">
+						Haz click aquí 1
+					</button>
+				</h2>
+				<div id="panel1" class="c-foldable__panel js-foldable-panel">
 					<div class="c-foldable__panel-inner js-foldable-panel-inner">
 						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
 						<p>Nulla accusamus architecto voluptas, aspernatur quos id ut pariatur. Iste incidunt exercitationem quia beatae cumque!</p>
@@ -45,7 +51,7 @@
 						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio in iusto eveniet est et iure?</p>
 						<p>Nulla accusamus architecto voluptas, aspernatur quos id ut pariatur. Iste incidunt exercitationem quia beatae cumque!</p>
 
-						<div class="c-foldable js-foldable" data-foldable-accordion="true">
+						<section class="c-foldable js-foldable">
 							<div class="c-foldable__item js-foldable-item">
 								<button type="button" class="c-foldable__trigger js-foldable-trigger">
 									Haz click aquí 3.1
@@ -81,11 +87,11 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</section>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 
 	</main>
 </body>

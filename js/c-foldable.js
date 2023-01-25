@@ -6,6 +6,9 @@ const cFoldable = (function() {
 		panel: '.js-foldable-panel',
 		panel_inner: '.js-foldable-panel-inner',
 	};
+	const LIMITS = {
+		'desktop': 1280 - 1
+	};
 
 
 	// UTILS
@@ -27,6 +30,15 @@ const cFoldable = (function() {
 	}
 
 
+	function getBlockOff(block) {
+		console.group('limit');
+		console.log('block:', block);
+		console.log('data-foldable-off:', block.dataset.foldableOff, LIMITS[block.dataset.foldableOff]);
+		console.groupEnd();
+		return LIMITS[block.dataset.foldableOff] || window.innerWidth;
+	}
+
+
 
 
 
@@ -38,13 +50,18 @@ const cFoldable = (function() {
 			const openAccordionItems = block.querySelectorAll(':scope > .js-foldable-item.is-open');
 			openAccordionItems.forEach(item => closeFoldable(item))
 		}
-		const panel = item.querySelector('.js-foldable-panel');
-		const contentHeight = getContentHeight(panel);
-		setHeight(panel, contentHeight);
-		setTimeout(() => {
-			item.classList.add('is-open');
-			panel.style.height = null;
-		}, 350);
+
+		const blockOff = getBlockOff(block);
+
+		if (window.innerWidth <= blockOff) {
+			const panel = item.querySelector('.js-foldable-panel');
+			const contentHeight = getContentHeight(panel);
+			setHeight(panel, contentHeight);
+			setTimeout(() => {
+				item.classList.add('is-open');
+				panel.style.height = null;
+			}, 350);
+		}
 	}
 
 
