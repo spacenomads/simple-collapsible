@@ -31,12 +31,13 @@ const cFoldable = (function () {
 		// console.group('limit');
 		// console.log('block:', block);
 		// console.log('data-foldable-off:', block.dataset.foldableOff, LIMITS[block.dataset.foldableOff]);
-		// console.groupEnd();
-		return LIMITS[block.dataset.foldableOff] || window.innerWidth;
+		// console=groupEnd();
+		return LIMITS[block.dataset.foldableOff];
 	}
 
 	// Foldable functions
 	function openFoldable(item) {
+		// TODO: Activar los tabindex de los elementos abiertos anidados
 		const block = item.closest('.js-foldable');
 		const isAccordion = block.dataset.foldableAccordion === "true";
 		if (isAccordion) {
@@ -48,7 +49,7 @@ const cFoldable = (function () {
 		const panel = item.querySelector('.js-foldable-panel');
 		const trigger = item.querySelector('.js-foldable-trigger');
 
-		if (window.innerWidth <= blockOff) {
+		if (!blockOff || window.innerWidth <= blockOff) {
 			const contentHeight = getContentHeight(panel);
 			trigger.setAttribute('aria-expanded', 'true');
 			setHeight(panel, contentHeight);
@@ -60,6 +61,7 @@ const cFoldable = (function () {
 	}
 
 	function closeFoldable(item) {
+		// TODO: Desactivar los tabindex del contenido
 		const panel = item.querySelector('.js-foldable-panel');
 		const contentHeight = getContentHeight(panel);
 		const trigger = item.querySelector('.js-foldable-trigger');
@@ -77,7 +79,7 @@ const cFoldable = (function () {
 		const trigger = event.currentTarget;
 		const block = trigger.closest('.js-foldable');
 		const blockOff = getBlockOff(block);
-		if (window.innerWidth > blockOff) {
+		if (blockOff && window.innerWidth > blockOff) {
 			event.preventDefault();
 		} else {
 			const {item, isOpen} = getFoldableItemStatus(trigger);
@@ -96,7 +98,9 @@ const cFoldable = (function () {
 				setHeight(panel, 0);
 			}
 
-			if (window.innerWidth > blockOff) {
+			trigger.setAttribute('aria-expanded', isOpen);
+
+			if (blockOff && window.innerWidth > blockOff) {
 				trigger.setAttribute('disabled', 'disabled');
 			}
 			trigger.addEventListener('click', updateFoldableItem);
@@ -105,8 +109,8 @@ const cFoldable = (function () {
 
 		blocks.forEach(block => block.classList.add('is-active'));
 
-		function updateFoldableLimitedTriggers(blocks, status) {
-			blocks.forEach(block => {
+		function updateFoldableLimitedTriggers(block, status) {
+
 				const triggers = block.querySelectorAll(':scope > .js-foldable-item > .js-foldable-heading > .js-foldable-trigger');
 				if (status === 'enable') {
 					console.log('enable')
@@ -121,49 +125,41 @@ const cFoldable = (function () {
 						trigger.classList.add('disabled-class');
 					});
 				}
+		}
+
+
+		function closeAllClosableItems() {
+			const autoFoldableBlocks = document.querySelectorAll('.js-foldable[data-autofoldable]');
+
+			autoFoldableBlocks.forEach(block => {
+				const items = block.querySelectorAll(':scope > .js-foldable-item');
+				items.forEach(item =>closeFoldable(item) );
 			});
 		}
 
-		function updateFoldableBlocksOnResize() {
 
+		function updateFoldableBlocksOnResize() {
 			const foldableLimitedBlocks = [...document.querySelectorAll('.js-foldable[data-foldable-off]')].filter(block => block.dataset.foldableOff);
 
-			// foldableLimitedBlocks.forEach(block => {
+			foldableLimitedBlocks.forEach(block => {
+				const blockOff = getBlockOff(block);
+				const isMediaLimit = blockOff ? window.matchMedia(`(min-width: ${blockOff + 1}px)`).matches : false;
 
-			// 	Conseguir el limite del bloque
-			// 	ver si lo ha pasado
-			// 		si lo pasa
-			// 			compruebo si tiene la clase
-			// 			si no tiene la clase
-			// 				deshabilitarlo
-			// 				y coloco clase
-			// 		no lo pasa
-			// 			compruebo que no tiene la clase
-			// 			si tiene la clase
-			// 				habilitarlo
-			// 				y elimino clase
-			// });
-
-			const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
-			const body = document.querySelector('body');
-
-			if (isDesktop) {
-				const hasLimit = body.classList.contains('has-foldable-limit');
-				if (!hasLimit) {
-					body.classList.add('has-foldable-limit');
-					updateFoldableLimitedTriggers(foldableLimitedBlocks, 'disable');
-					console.log({isDesktop, width: window.innerWidth});
+				const hasLimit = block.classList.contains('has-active-limit');
+				if (isMediaLimit) {
+					if (!hasLimit) {
+						block.classList.add('has-active-limit');
+						updateFoldableLimitedTriggers(block, 'disable');
+					}
+				} else {
+					if (hasLimit) {
+						block.classList.remove('has-active-limit');
+						updateFoldableLimitedTriggers(block, 'enable');
+						closeAllClosableItems()
+					}
 				}
-			} else {
-				const hasLimit = body.classList.contains('has-foldable-limit');
-				if (hasLimit) {
-					body.classList.remove('has-foldable-limit');
-					updateFoldableLimitedTriggers(foldableLimitedBlocks, 'enable');
-					console.log({isDesktop, width: window.innerWidth});
-				}
-			}
+			});
 		}
-
 
 		window.addEventListener('resize', updateFoldableBlocksOnResize);
 	}

@@ -9,6 +9,9 @@
 		transition: height ease .5s;
 		overflow: hidden;
 	}
+	&.is-inactive {
+		transition: none !important;
+	}
 
 	.collapsible--overflow & {
 		overflow: visible;
