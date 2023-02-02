@@ -125,7 +125,25 @@ const cFoldable = (function () {
 		}
 
 		function updateFoldableBlocksOnResize() {
+
 			const foldableLimitedBlocks = [...document.querySelectorAll('.js-foldable[data-foldable-off]')].filter(block => block.dataset.foldableOff);
+
+			// foldableLimitedBlocks.forEach(block => {
+
+			// 	Conseguir el limite del bloque
+			// 	ver si lo ha pasado
+			// 		si lo pasa
+			// 			compruebo si tiene la clase
+			// 			si no tiene la clase
+			// 				deshabilitarlo
+			// 				y coloco clase
+			// 		no lo pasa
+			// 			compruebo que no tiene la clase
+			// 			si tiene la clase
+			// 				habilitarlo
+			// 				y elimino clase
+			// });
+
 			const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
 			const body = document.querySelector('body');
 
@@ -134,14 +152,15 @@ const cFoldable = (function () {
 				if (!hasLimit) {
 					body.classList.add('has-foldable-limit');
 					updateFoldableLimitedTriggers(foldableLimitedBlocks, 'disable');
+					console.log({isDesktop, width: window.innerWidth});
 				}
 			} else {
 				const hasLimit = body.classList.contains('has-foldable-limit');
 				if (hasLimit) {
 					body.classList.remove('has-foldable-limit');
 					updateFoldableLimitedTriggers(foldableLimitedBlocks, 'enable');
+					console.log({isDesktop, width: window.innerWidth});
 				}
-				console.log({isDesktop, width: window.innerWidth});
 			}
 		}
 
