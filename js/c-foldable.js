@@ -53,7 +53,6 @@ const cFoldable = (function () {
 			const FOCUSABLE_ELEMS = [...panel.querySelectorAll('[data-unfocusable]')]
 				.filter(elm => {
 					const elmfoldableItem = elm.closest('.js-foldable-item');
-					console.log(elm, elmfoldableItem === mainFoldableItem)
 					return elmfoldableItem === mainFoldableItem;
 				});
 
@@ -62,6 +61,19 @@ const cFoldable = (function () {
 			});
 		}
 	};
+
+
+	function setOpenedFoldable(panel, item) {
+		setTimeout(() => {
+			panel.style.height = null;
+			item.classList.add('is-open');
+
+			const DIRECT_ITEMS = panel.querySelectorAll(':scope > .js-foldable-panel-inner > .js-foldable > .js-foldable-item');
+			DIRECT_ITEMS.forEach(function(item){
+				recoverfocus(item.querySelector('.js-foldable-trigger'));
+			});
+		}, 350);
+	}
 
 	// Foldable functions
 	function openFoldable(item) {
@@ -82,15 +94,7 @@ const cFoldable = (function () {
 			// TODO: activar los elementos focusables del panel y de cada panel abierto interior
 			addFocusablePanelElemsBack(panel);
 			setHeight(panel, contentHeight);
-			setTimeout(() => {
-				panel.style.height = null;
-				item.classList.add('is-open');
-
-				const DIRECT_ITEMS = panel.querySelectorAll(':scope > .js-foldable-panel-inner > .js-foldable > .js-foldable-item');
-				DIRECT_ITEMS.forEach(function(item){
-					recoverfocus(item.querySelector('.js-foldable-trigger'));
-				});
-			}, 350);
+			setOpenedFoldable(panel, item);
 		}
 	}
 
@@ -182,24 +186,24 @@ const cFoldable = (function () {
 
 
 	function initTrigger(trigger) {
-			const { item, isOpen } = getFoldableItemStatus(trigger);
-			const panel = item.querySelector('.js-foldable-panel');
-			const block = item.closest('.js-foldable');
-			const blockOff = getBlockOff(block);
-			const isLimitActive = blockOff && window.innerWidth > blockOff;
-			if (!isOpen && !isLimitActive) {
-				setHeight(panel, 0);
-				removeFocusableElemsFromNavigation(panel);
-			}
+		const { item, isOpen } = getFoldableItemStatus(trigger);
+		const panel = item.querySelector('.js-foldable-panel');
+		const block = item.closest('.js-foldable');
+		const blockOff = getBlockOff(block);
+		const isLimitActive = blockOff && window.innerWidth > blockOff;
+		if (!isOpen && !isLimitActive) {
+			setHeight(panel, 0);
+			removeFocusableElemsFromNavigation(panel);
+		}
 
-			trigger.setAttribute('aria-expanded', isOpen);
+		trigger.setAttribute('aria-expanded', isOpen);
 
-			if (isLimitActive) {
-				trigger.setAttribute('disabled', 'disabled');
-				trigger.setAttribute('aria-expanded', true);
-				panel.removeAttribute('style');
-			}
-			trigger.addEventListener('click', updateFoldableItem);
+		if (isLimitActive) {
+			trigger.setAttribute('disabled', 'disabled');
+			trigger.setAttribute('aria-expanded', true);
+			panel.removeAttribute('style');
+		}
+		trigger.addEventListener('click', updateFoldableItem);
 	}
 
 
