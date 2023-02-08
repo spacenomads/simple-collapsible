@@ -35,6 +35,18 @@ const cFoldable = (function () {
 		return LIMITS[block.dataset.foldableOff];
 	}
 
+
+	function recoverfocus(elem) {
+		if (elem.dataset.tabIndex) {
+			elem.tabIndex = elem.dataset.tabIndex;
+			elem.removeAttribute('data-tab-index');
+		} else {
+			elem.removeAttribute('tabindex');
+		}
+		elem.removeAttribute('data-unfocusable');
+	}
+
+
 	function addFocusablePanelElemsBack(panel) {
 		if (panel) {
 			const mainFoldableItem = panel.closest('.js-foldable-item');
@@ -46,13 +58,7 @@ const cFoldable = (function () {
 				});
 
 			FOCUSABLE_ELEMS.forEach(function(elem){
-				if (elem.dataset.tabIndex) {
-					elem.tabIndex = elem.dataset.tabIndex;
-					elem.removeAttribute('data-tab-index');
-				} else {
-					elem.removeAttribute('tabindex');
-				}
-				elem.removeAttribute('data-unfocusable');
+				recoverfocus(elem);
 			});
 		}
 	};
@@ -82,14 +88,7 @@ const cFoldable = (function () {
 
 				const DIRECT_ITEMS = panel.querySelectorAll(':scope > .js-foldable-panel-inner > .js-foldable > .js-foldable-item');
 				DIRECT_ITEMS.forEach(function(item){
-					const elem = item.querySelector('.js-foldable-trigger');
-					if (elem.dataset.tabIndex) {
-						elem.tabIndex = elem.dataset.tabIndex;
-						elem.removeAttribute('data-tab-index');
-					} else {
-						elem.removeAttribute('tabindex');
-					}
-					elem.removeAttribute('data-unfocusable');
+					recoverfocus(item.querySelector('.js-foldable-trigger'));
 				});
 			}, 350);
 		}
