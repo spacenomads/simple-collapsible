@@ -36,3 +36,8 @@
 	overflow: hidden;
 	transition: height ease .3s;
 }
+
+
+[data-unfocusable] {
+	border: 3px solid lime;
+}

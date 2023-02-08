@@ -11,29 +11,30 @@ const cFoldable = (function () {
 		'desktop': 1280 - 1
 	};
 
+
 	// UTILS
 	function getFoldableItemStatus(trigger) {
 		const item = trigger.closest('.js-foldable-item');
 		const isOpen = item.classList.contains('is-open');
-		return {item, isOpen};
+		return { item, isOpen };
 	}
+
 
 	function setHeight(el, value) {
 		el.style.height = value === 0 ? '0' : `${value}px`;
 	}
+
 
 	function getContentHeight(panel) {
 		const innerPanel = panel.querySelector('.js-foldable-panel-inner');
 		return innerPanel.offsetHeight;
 	}
 
+
 	function getBlockOff(block) {
-		// console.group('limit');
-		// console.log('block:', block);
-		// console.log('data-foldable-off:', block.dataset.foldableOff, LIMITS[block.dataset.foldableOff]);
-		// console=groupEnd();
 		return LIMITS[block.dataset.foldableOff];
 	}
+
 
 	// Foldable functions
 	function openFoldable(item) {
@@ -48,17 +49,17 @@ const cFoldable = (function () {
 		const blockOff = getBlockOff(block);
 		const panel = item.querySelector('.js-foldable-panel');
 		const trigger = item.querySelector('.js-foldable-trigger');
-
 		if (!blockOff || window.innerWidth <= blockOff) {
 			const contentHeight = getContentHeight(panel);
 			trigger.setAttribute('aria-expanded', 'true');
 			setHeight(panel, contentHeight);
 			setTimeout(() => {
-				item.classList.add('is-open');
 				panel.style.height = null;
+				item.classList.add('is-open');
 			}, 350);
 		}
 	}
+
 
 	function closeFoldable(item) {
 		// TODO: Desactivar los tabindex del contenido
@@ -66,6 +67,7 @@ const cFoldable = (function () {
 		const contentHeight = getContentHeight(panel);
 		const trigger = item.querySelector('.js-foldable-trigger');
 		trigger.setAttribute('aria-expanded', 'false');
+		removeFocusableElemsFromNavigation(panel);
 		setHeight(panel, contentHeight);
 		setTimeout(() => {
 			setHeight(panel, 0);
@@ -75,6 +77,7 @@ const cFoldable = (function () {
 		}, 0);
 	}
 
+
 	function updateFoldableItem(event) {
 		const trigger = event.currentTarget;
 		const block = trigger.closest('.js-foldable');
@@ -82,87 +85,92 @@ const cFoldable = (function () {
 		if (blockOff && window.innerWidth > blockOff) {
 			event.preventDefault();
 		} else {
-			const {item, isOpen} = getFoldableItemStatus(trigger);
+			const { item, isOpen } = getFoldableItemStatus(trigger);
 			isOpen ? closeFoldable(item) : openFoldable(item);
 		}
 	}
 
-	function foldableInit(blocks, triggers) {
-		triggers.forEach(trigger => {
-			const {item, isOpen} = getFoldableItemStatus(trigger);
+
+	function updateFoldableLimitedBlocks(block, status) {
+
+		const triggers = block.querySelectorAll(':scope > .js-foldable-item > .js-foldable-heading > .js-foldable-trigger');
+		if (status === 'enable') {
+			triggers.forEach(trigger => {
+				trigger.removeAttribute('disabled');
+			});
+		} else {
+			triggers.forEach(trigger => {
+				trigger.setAttribute('disabled', 'disabled');
+				trigger.setAttribute('aria-expanded', true);
+				const panel = trigger.closest('.js-foldable-item').querySelector('.js-foldable-panel');
+				panel.removeAttribute('style');
+			});
+		}
+	}
+
+
+	function closeAllClosableItems() {
+		const autoFoldableBlocks = document.querySelectorAll('.js-foldable[data-autofoldable]');
+		autoFoldableBlocks.forEach(block => {
+			const items = block.querySelectorAll(':scope > .js-foldable-item');
+			items.forEach(item => closeFoldable(item));
+		});
+	}
+
+
+	function updateFoldableLimitedBlock(block) {
+		const blockOff = getBlockOff(block);
+		const isMediaLimit = blockOff ? window.matchMedia(`(min-width: ${blockOff + 1}px)`).matches : false;
+
+		const hasLimit = block.classList.contains('has-active-limit');
+		if (isMediaLimit) {
+			if (!hasLimit) {
+				block.classList.add('has-active-limit');
+				updateFoldableLimitedBlocks(block, 'disable');
+			}
+		} else if (hasLimit) {
+			block.classList.remove('has-active-limit');
+			updateFoldableLimitedBlocks(block, 'enable');
+			closeAllClosableItems();
+		}
+	};
+
+
+	function updateFoldableBlocksOnResize() {
+		const foldableLimitedBlocks = [...document.querySelectorAll('.js-foldable[data-foldable-off]')].filter(block => block.dataset.foldableOff);
+		foldableLimitedBlocks.forEach(updateFoldableLimitedBlock);
+	}
+
+
+	function initTrigger(trigger) {
+			const { item, isOpen } = getFoldableItemStatus(trigger);
 			const panel = item.querySelector('.js-foldable-panel');
 			const block = item.closest('.js-foldable');
 			const blockOff = getBlockOff(block);
-
-			if (!isOpen) {
+			const isLimitActive = blockOff && window.innerWidth > blockOff;
+			if (!isOpen && !isLimitActive) {
 				setHeight(panel, 0);
+				removeFocusableElemsFromNavigation(panel);
 			}
 
 			trigger.setAttribute('aria-expanded', isOpen);
 
-			if (blockOff && window.innerWidth > blockOff) {
+			if (isLimitActive) {
 				trigger.setAttribute('disabled', 'disabled');
+				trigger.setAttribute('aria-expanded', true);
+				panel.removeAttribute('style');
 			}
 			trigger.addEventListener('click', updateFoldableItem);
-
-		});
-
-		blocks.forEach(block => block.classList.add('is-active'));
-
-		function updateFoldableLimitedTriggers(block, status) {
-
-				const triggers = block.querySelectorAll(':scope > .js-foldable-item > .js-foldable-heading > .js-foldable-trigger');
-				if (status === 'enable') {
-					console.log('enable')
-					triggers.forEach(trigger => {
-						trigger.removeAttribute('disabled');
-						trigger.classList.remove('disabled-class');
-					});
-				} else {
-					console.log('disable')
-					triggers.forEach(trigger => {
-						trigger.setAttribute('disabled', 'disabled');
-						trigger.classList.add('disabled-class');
-					});
-				}
-		}
-
-
-		function closeAllClosableItems() {
-			const autoFoldableBlocks = document.querySelectorAll('.js-foldable[data-autofoldable]');
-
-			autoFoldableBlocks.forEach(block => {
-				const items = block.querySelectorAll(':scope > .js-foldable-item');
-				items.forEach(item =>closeFoldable(item) );
-			});
-		}
-
-
-		function updateFoldableBlocksOnResize() {
-			const foldableLimitedBlocks = [...document.querySelectorAll('.js-foldable[data-foldable-off]')].filter(block => block.dataset.foldableOff);
-
-			foldableLimitedBlocks.forEach(block => {
-				const blockOff = getBlockOff(block);
-				const isMediaLimit = blockOff ? window.matchMedia(`(min-width: ${blockOff + 1}px)`).matches : false;
-
-				const hasLimit = block.classList.contains('has-active-limit');
-				if (isMediaLimit) {
-					if (!hasLimit) {
-						block.classList.add('has-active-limit');
-						updateFoldableLimitedTriggers(block, 'disable');
-					}
-				} else {
-					if (hasLimit) {
-						block.classList.remove('has-active-limit');
-						updateFoldableLimitedTriggers(block, 'enable');
-						closeAllClosableItems()
-					}
-				}
-			});
-		}
-
-		window.addEventListener('resize', updateFoldableBlocksOnResize);
 	}
+
+
+	function foldableInit(blocks, triggers) {
+		triggers.forEach(initTrigger);
+		blocks.forEach(block => block.classList.add('is-active'));
+		window.addEventListener('resize', updateFoldableBlocksOnResize);
+
+	}
+
 
 	return {
 		foldableInit,
@@ -175,3 +183,32 @@ window.addEventListener('DOMContentLoaded', () => {
 	foldableBlocks && cFoldable.foldableInit(foldableBlocks, foldableTriggerItems);
 });
 
+
+
+const removeFocusableElemsFromNavigation = function(elem) {
+	if (elem) {
+		const FOCUSABLE_ELEMS = elem.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+		FOCUSABLE_ELEMS.forEach(function(elem){
+			if (elem.tabIndex && !elem.dataset.tabIndex) {
+				elem.dataset.tabIndex = elem.tabIndex;
+			}
+			elem.setAttribute('tabindex', '-1');
+			elem.setAttribute('data-unfocusable', 'true');
+		});
+	}
+};
+
+const addFocusablePanelElemsBack = function(elem) {
+	if (elem) {
+		const FOCUSABLE_ELEMS = elem.querySelectorAll('[data-unfocusable]');
+		FOCUSABLE_ELEMS.forEach(function(elem){
+			if (elem.dataset.tabIndex) {
+				elem.tabIndex = elem.dataset.tabIndex;
+				elem.removeAttribute('data-tab-index');
+			} else {
+				elem.removeAttribute('tabindex');
+			}
+			elem.removeAttribute('data-unfocusable');
+		});
+	}
+};
