@@ -35,27 +35,62 @@ const cFoldable = (function () {
 		return LIMITS[block.dataset.foldableOff];
 	}
 
+	function addFocusablePanelElemsBack(panel) {
+		if (panel) {
+			const mainFoldableItem = panel.closest('.js-foldable-item');
+			const FOCUSABLE_ELEMS = [...panel.querySelectorAll('[data-unfocusable]')]
+				.filter(elm => {
+					const elmfoldableItem = elm.closest('.js-foldable-item');
+					console.log(elm, elmfoldableItem === mainFoldableItem)
+					return elmfoldableItem === mainFoldableItem;
+				});
+
+			FOCUSABLE_ELEMS.forEach(function(elem){
+				if (elem.dataset.tabIndex) {
+					elem.tabIndex = elem.dataset.tabIndex;
+					elem.removeAttribute('data-tab-index');
+				} else {
+					elem.removeAttribute('tabindex');
+				}
+				elem.removeAttribute('data-unfocusable');
+			});
+		}
+	};
 
 	// Foldable functions
 	function openFoldable(item) {
-		// TODO: Activar los tabindex de los elementos abiertos anidados
 		const block = item.closest('.js-foldable');
 		const isAccordion = block.dataset.foldableAccordion === "true";
+		const blockOff = getBlockOff(block);
+		const panel = item.querySelector('.js-foldable-panel');
+		const trigger = item.querySelector('.js-foldable-trigger');
+
 		if (isAccordion) {
 			const openAccordionItems = block.querySelectorAll(':scope > .js-foldable-item.is-open');
 			openAccordionItems.forEach(item => closeFoldable(item))
 		}
 
-		const blockOff = getBlockOff(block);
-		const panel = item.querySelector('.js-foldable-panel');
-		const trigger = item.querySelector('.js-foldable-trigger');
 		if (!blockOff || window.innerWidth <= blockOff) {
 			const contentHeight = getContentHeight(panel);
 			trigger.setAttribute('aria-expanded', 'true');
+			// TODO: activar los elementos focusables del panel y de cada panel abierto interior
+			addFocusablePanelElemsBack(panel);
 			setHeight(panel, contentHeight);
 			setTimeout(() => {
 				panel.style.height = null;
 				item.classList.add('is-open');
+
+				const DIRECT_ITEMS = panel.querySelectorAll(':scope > .js-foldable-panel-inner > .js-foldable > .js-foldable-item');
+				DIRECT_ITEMS.forEach(function(item){
+					const elem = item.querySelector('.js-foldable-trigger');
+					if (elem.dataset.tabIndex) {
+						elem.tabIndex = elem.dataset.tabIndex;
+						elem.removeAttribute('data-tab-index');
+					} else {
+						elem.removeAttribute('tabindex');
+					}
+					elem.removeAttribute('data-unfocusable');
+				});
 			}, 350);
 		}
 	}
@@ -75,6 +110,9 @@ const cFoldable = (function () {
 				item.classList.remove('is-open');
 			}, 350);
 		}, 0);
+
+		const INTERNAL_OPEN_ITEMS = panel.querySelectorAll('.js-foldable-item.is-open');
+		INTERNAL_OPEN_ITEMS.length && INTERNAL_OPEN_ITEMS.forEach(item => closeFoldable(item));
 	}
 
 
@@ -100,10 +138,12 @@ const cFoldable = (function () {
 			});
 		} else {
 			triggers.forEach(trigger => {
+				const panel = trigger.closest('.js-foldable-item').querySelector('.js-foldable-panel');
 				trigger.setAttribute('disabled', 'disabled');
 				trigger.setAttribute('aria-expanded', true);
-				const panel = trigger.closest('.js-foldable-item').querySelector('.js-foldable-panel');
 				panel.removeAttribute('style');
+				// TODO: activar los elementos focusables del panel y de cada panel abierto interior
+				addFocusablePanelElemsBack(panel);
 			});
 		}
 	}
@@ -198,17 +238,3 @@ const removeFocusableElemsFromNavigation = function(elem) {
 	}
 };
 
-const addFocusablePanelElemsBack = function(elem) {
-	if (elem) {
-		const FOCUSABLE_ELEMS = elem.querySelectorAll('[data-unfocusable]');
-		FOCUSABLE_ELEMS.forEach(function(elem){
-			if (elem.dataset.tabIndex) {
-				elem.tabIndex = elem.dataset.tabIndex;
-				elem.removeAttribute('data-tab-index');
-			} else {
-				elem.removeAttribute('tabindex');
-			}
-			elem.removeAttribute('data-unfocusable');
-		});
-	}
-};
